@@ -1,11 +1,15 @@
 import os
 
-def get_next_instance(class_name: str) -> str:
+from typing import Optional
+
+def get_next_instance(class_name: str, first_dataset: str) -> Optional[str]:
     """
     Данная функция возвращает относительрный путь для объекта класса, переданного
     в функцию
+    Parameters: class_name: str, first_dataset: str
+    Returns: none
     """
-    path = os.path.join('dataset_1', class_name)
+    path = os.path.join(first_dataset, class_name)
     class_names = os.listdir(path)
     class_names.append(None)
     for i in range(len(class_names)):
@@ -14,4 +18,4 @@ def get_next_instance(class_name: str) -> str:
         elif class_names[i] is None:
             yield None   
 
-print(*get_next_instance('cat'))
+print(*get_next_instance('cat', "dataset_1"))

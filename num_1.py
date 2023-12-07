@@ -1,36 +1,44 @@
 import os
 import csv
+from typing import List
 
 
-def getting_absolute_path(images_class: str) -> list[str]:
+def getting_absolute_path(images_class: str, path_dataset: str) -> List[str]:
     '''
-    Данная функция получает имя класса изображений и возвращает список абсолютных путей изображений 
+    Данная функция возвращает список list абсолютных путей изображений
+    Parameters: class_name : str, second_dataset: str
+    Returns: list
     ''' 
-    absolute_path = os.path.abspath('dataset_1') 
+    absolute_path = os.path.abspath(path_dataset) 
     class_path = os.path.join(absolute_path, images_class) 
     image_names = os.listdir(class_path) 
     image_absolute_path = [os.path.join(class_path, name) for name in image_names] 
  
     return image_absolute_path
 
-def getting_relative_path(images_class:str) -> list[str]:
+
+def getting_relative_path(images_class: str,  path_dataset: str) -> List[str]:
     '''
-    Данная функция получает имя класса изображений и возвращает список относительных путей изображений(относительно dataset)
+    Данная функция возвращает список list относительных путей изображений(относительно dataset)
+    Parameters: class_name : str, path_dataset: str
+    Returns: list
     '''
-    relative_path = os.path.relpath('dataset_1')
+    relative_path = os.path.relpath(path_dataset)
     class_path = os.path.join(relative_path, images_class)
     image_names = os.listdir(class_path)
     image_relative_path = [os.path.join(class_path, name)for name in image_names]
 
     return image_relative_path
-def main()-> None:
-    first_class="cat"
-    second_class="dog"
 
-    cat_abs_paths = getting_absolute_path(first_class)
-    cat_rel_paths = getting_relative_path(first_class)
-    dog_abs_paths = getting_absolute_path(second_class)
-    dog_rel_paths = getting_relative_path(second_class)
+
+def main(path_dataset: str) -> str:
+    first_class ="cat"
+    second_class ="dog"
+
+    cat_abs_paths = getting_absolute_path(first_class, path_dataset)
+    cat_rel_paths = getting_relative_path(first_class, path_dataset)
+    dog_abs_paths = getting_absolute_path(second_class, path_dataset)
+    dog_rel_paths = getting_relative_path(second_class, path_dataset)
 
     with open('paths_1.csv', 'w') as csv_file:
         writer = csv.writer(csv_file, delimiter=',', lineterminator='\r')
@@ -41,4 +49,4 @@ def main()-> None:
 
 
 if __name__ == "__main__":
-    main()
+    main("dataset_1")

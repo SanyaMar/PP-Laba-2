@@ -2,14 +2,21 @@ import os
 import csv
 import shutil
 import random
+from typing import List
 
+def main(second_dataset: str, third_dataset: str) -> List[str]:
+    '''
+    Данная функция генерирует случайные имена для файлов в "dataset_3", 
+    Parameters: class_name: str, third_dataset: str
+    Returns: none
+    '''
+    second_dataset="dataset_2"
+    third_dataset='dataset_3'
+    if os.path.isdir(third_dataset):
+        shutil.rmtree(third_dataset)
 
-def main() -> None:
-    if os.path.isdir('dataset_3'):
-        shutil.rmtree('dataset_3')
-
-    path_dataset_2 = os.path.relpath('dataset_2')
-    path_dataset_3 = os.path.relpath('dataset_3')
+    path_dataset_2 = os.path.relpath(second_dataset)
+    path_dataset_3 = os.path.relpath(third_dataset)
 
     shutil.copytree(path_dataset_2, path_dataset_3)
 
@@ -28,7 +35,7 @@ def main() -> None:
     for old_name, new_name in zip(rel_paths, new_rel_paths):
         os.replace(old_name, new_name)
     
-    abs_path = [os.path.join(os.path.abspath('dataset3'), name) for name in new_names] 
+    abs_path = [os.path.join(os.path.abspath(third_dataset), name) for name in new_names] 
     new_abs_paths = list(abs_path)
 
     with open('paths_3.csv', 'w') as csv_file:
@@ -41,6 +48,5 @@ def main() -> None:
             writer.writerow([full_path, rel_path, class_name])
             
 
-
 if __name__ == "__main__":
-    main()
+    main("dataset_2", 'dataset_3' )

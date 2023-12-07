@@ -1,12 +1,16 @@
 import os
 import csv
 import shutil
+from typing import List
 
-def replace_images(class_name: str) -> list[str]:
-    """
-    Данная функция изменяет имена изображений и переносит их в другую директорию
-    """   
-    relative_path = os.path.relpath('dataset_2')
+
+def replace_images(class_name: str, second_dataset: str) -> List[str]:
+    '''
+    Данная функция изменяет имена изображений, объединяя номер изображения и класс в формате class_number.jpg, 
+    Parameters: class_name: str, second_dataset: str
+    Returns: none
+    '''
+    relative_path = os.path.relpath(second_dataset)
     class_path = os.path.join(relative_path, class_name)
     image_names = os.listdir(class_path)
     image_rel_paths = [os.path.join(class_path, name) for name in image_names]
@@ -15,7 +19,7 @@ def replace_images(class_name: str) -> list[str]:
     for old, new in zip(image_rel_paths, new_image_rel_paths):
         os.replace(old, new)
 
-    os.chdir('dataset_2')
+    os.chdir(second_dataset)
 
     if os.path.isdir(class_name):
         os.rmdir(class_name)
@@ -23,11 +27,13 @@ def replace_images(class_name: str) -> list[str]:
     os.chdir('..')
 
 
-def getting_absolute_path(class_name: str) -> list[str]:
-    """
-    Данная функция возвращает список измененных абсолютных путей для изображений
-    """
-    absolute_path = os.path.abspath('dataset_2')
+def getting_absolute_path(class_name: str, second_dataset: str) -> List[str]:
+    '''
+    Данная функция возвращает список list абсолютных путей изображений
+    Parameters: class_name : str, second_dataset: str
+    Returns: list
+    ''' 
+    absolute_path = os.path.abspath(second_dataset)
     image_names = os.listdir(absolute_path)
     image_class_names = []
     for name in image_names:
@@ -37,11 +43,13 @@ def getting_absolute_path(class_name: str) -> list[str]:
     
     return image_absolute_path
 
-def getting_relative_path(class_name: str)-> list[str]:
-    """
-    Данная функция возвращает список измененных относительных путей для изображений
-    """
-    relative_path = os.path.relpath('dataset_2')
+def getting_relative_path(class_name: str, second_dataset: str) -> List[str]:
+    '''
+    Данная функция возвращает список list относительных путей изображений(относительно dataset)
+    Parameters: class_name : str, second_dataset: str
+    Returns: list
+    '''
+    relative_path = os.path.relpath(second_dataset)
     image_names = os.listdir(relative_path)
     image_class_names = []
     for name in image_names:
@@ -52,24 +60,24 @@ def getting_relative_path(class_name: str)-> list[str]:
     return image_relative_path
 
 
-def main()-> None:
+def main(first_dataset: str, second_dataset: str) -> str:
     first_class="cat"
     second_class="dog"
 
-    if os.path.isdir('dataset_2'):
-        shutil.rmtree('dataset_2')
+    if os.path.isdir(second_dataset):
+        shutil.rmtree(second_dataset)
 
-    path_dataset_1 = os.path.relpath('dataset_1')
-    path_dataset_2 = os.path.relpath('dataset_2')
+    path_dataset_1 = os.path.relpath(first_dataset)
+    path_dataset_2 = os.path.relpath(second_dataset)
     shutil.copytree(path_dataset_1, path_dataset_2)
 
-    replace_images(first_class)
-    replace_images(second_class)
+    replace_images(first_class, second_dataset)
+    replace_images(second_class, second_dataset)
 
-    dog_abs_paths = getting_absolute_path(first_class)
-    dog_rel_paths = getting_relative_path(first_class)
-    cat_abs_paths = getting_absolute_path(second_class)
-    cat_rel_paths = getting_relative_path(second_class)
+    dog_abs_paths = getting_absolute_path(first_class, second_dataset)
+    dog_rel_paths = getting_relative_path(first_class, second_dataset)
+    cat_abs_paths = getting_absolute_path(second_class, second_dataset)
+    cat_rel_paths = getting_relative_path(second_class, second_dataset)
 
     with open('paths_2.csv', 'w') as csv_file:
         writer = csv.writer(csv_file, delimiter=',', lineterminator='\r')
@@ -81,4 +89,4 @@ def main()-> None:
 
 
 if __name__ == "__main__":
-    main()
+    main("dataset_1", "dataset_2")
