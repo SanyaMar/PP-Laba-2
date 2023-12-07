@@ -3,14 +3,15 @@ import csv
 import shutil
 
 def replace_images(class_name: str) -> list[str]:
-    
+    """
+    Данная функция изменяет имена изображений и переносит их в другую директорию
+    """   
     relative_path = os.path.relpath('dataset_2')
     class_path = os.path.join(relative_path, class_name)
     image_names = os.listdir(class_path)
-    names=map(lambda name: os.path.join(class_path, name), image_names)
-    image_rel_paths = list(names)
-    new=map(lambda name: os.path.join(relative_path, f'{class_name}_{name}'), image_names)
-    new_image_rel_paths = list(new)
+    image_rel_paths = [os.path.join(class_path, name) for name in image_names]
+    new_image_names = [f"{class_name}_{name}" for name in image_names]
+    new_image_rel_paths = [os.path.join(relative_path, name) for name in new_image_names]
     for old, new in zip(image_rel_paths, new_image_rel_paths):
         os.replace(old, new)
 
@@ -18,34 +19,37 @@ def replace_images(class_name: str) -> list[str]:
 
     if os.path.isdir(class_name):
         os.rmdir(class_name)
-
+ 
     os.chdir('..')
 
-def getting_absolute_path(class_name: str) -> list[str]:
 
+def getting_absolute_path(class_name: str) -> list[str]:
+    """
+    Данная функция возвращает список измененных абсолютных путей для изображений
+    """
     absolute_path = os.path.abspath('dataset_2')
     image_names = os.listdir(absolute_path)
     image_class_names = []
     for name in image_names:
         if class_name in name:
             image_class_names.append(name)
-    name=map(lambda name: os.path.join(absolute_path, name), image_names)
-    image_absolute_path = list(name)
+    image_absolute_path = [os.path.join(absolute_path, name) for name in image_names] 
     
     return image_absolute_path
 
 def getting_relative_path(class_name: str)-> list[str]:
-   
-    absolute_path = os.path.relpath('dataset_2')
-    image_names = os.listdir(absolute_path)
+    """
+    Данная функция возвращает список измененных относительных путей для изображений
+    """
+    relative_path = os.path.relpath('dataset_2')
+    image_names = os.listdir(relative_path)
     image_class_names = []
     for name in image_names:
         if class_name in name:
             image_class_names.append(name)
-    name=map(lambda name: os.path.join(absolute_path, name), image_names)
-    image_absolute_path = list(name)
+    image_relative_path = [os.path.join(relative_path, name) for name in image_names] 
     
-    return image_absolute_path
+    return image_relative_path
 
 
 def main()-> None:

@@ -15,20 +15,20 @@ def main() -> None:
 
     names = os.listdir(path_dataset_3)
 
-    path=map(lambda name: os.path.join(path_dataset_3, name), names)
+    path = [os.path.join(path_dataset_3, name) for name in names] 
     rel_paths = list(path)
 
     random_numbers = random.sample(range(0, 10000), 2002)
 
     new_names = [f'{number}.jpg' for number in random_numbers]
     
-    new_path=map(lambda name: os.path.join(path_dataset_3, name), new_names)
+    new_path = [os.path.join(path_dataset_3, name) for name in new_names] 
     new_rel_paths = list(new_path)
 
     for old_name, new_name in zip(rel_paths, new_rel_paths):
         os.replace(old_name, new_name)
     
-    abs_path=map(lambda name: os.path.join(os.path.abspath('dataset3'), name), new_names)
+    abs_path = [os.path.join(os.path.abspath('dataset3'), name) for name in new_names] 
     new_abs_paths = list(abs_path)
 
     with open('paths_3.csv', 'w') as csv_file:
